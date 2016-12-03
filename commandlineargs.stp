@@ -1,0 +1,5 @@
+probe kernel.function(@1) {
+    printf("probefunc: %s \n", probefunc());
+}
+probe kernel.function(@1).return {
+}

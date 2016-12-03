@@ -1,0 +1,18 @@
+global reads
+
+probe vfs.read
+{
+    reads[execname()] ++
+}
+
+probe timer.s(3)
+{
+    printf("=======\n")
+
+    foreach (count in reads+)
+        printf("%s : %d \n", count, reads[count])
+        if(["stapio"] in reads) {
+            printf("stapio read detected, exiting\n")
+            exit()
+        }
+}
