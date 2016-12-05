@@ -11,8 +11,11 @@
 # Usage:
 # ./disktop.stp
 #
+#
 global io_stat,device
+
 global read_bytes,write_bytes
+
 probe vfs.read.return {
     if ($return>0) {
         if (devname!="N/A") {/*skip read from cache*/
@@ -22,6 +25,7 @@ probe vfs.read.return {
         }
     }
 }
+
 probe vfs.write.return {
     if ($return>0) {
         if (devname!="N/A") { /*skip update cache*/
@@ -31,6 +35,7 @@ probe vfs.write.return {
         }
     }
 }
+
 probe timer.ms(5000) {
     /* skip non-read/write disk */
     if (read_bytes+write_bytes) {
@@ -55,6 +60,7 @@ probe timer.ms(5000) {
     read_bytes = 0
     write_bytes = 0
 }
+
 probe end{
     delete io_stat
     delete device
